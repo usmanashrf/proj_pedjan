@@ -6,6 +6,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { ChevronDown, Euro } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type OptionI = {
     label: string | number,
@@ -16,7 +17,8 @@ interface SelectI {
     InitialValue: OptionI;
     Options: OptionI[];
     EuroIcon?: boolean;
-    name:string
+    name:string;
+    TriggerCss? : string;
 }
 
 const Select = ({
@@ -24,6 +26,7 @@ const Select = ({
     Options,
     EuroIcon = false,
     name,
+    TriggerCss
 }: SelectI) => {
 
     const [active, setactive] = useState<OptionI>(InitialValue)
@@ -32,7 +35,7 @@ const Select = ({
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <div onClick={() => setOpen(true)} className='w-full select-none cursor-pointer flex items-center justify-between border border-[#B8B8B8] rounded-lg md:py-4 py-3 px-3'>
+                <div onClick={() => setOpen(true)} className={cn([TriggerCss,'w-full select-none cursor-pointer flex items-center justify-between border border-[#B8B8B8] rounded-lg md:py-4 py-3 px-3'])}>
                     <input name={name} value={active.label} className='w-full cursor-pointer outline-none xs:text-sm text-xs' readOnly type="text" />
                     {EuroIcon ?
                         <Euro size={20} strokeWidth={1.5} />

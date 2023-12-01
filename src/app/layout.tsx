@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({ subsets: ["latin"], weight: ["400","500","600","700","800","900"] })
@@ -17,12 +18,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} bg-[#EDEEF0]`}>
+    <html lang="en" className='scroll-smooth'>
+      <body className={`${poppins!.className!} bg-[#EDEEF0]`}>
         <Header />
         <div className='container sm:px-8 px-4'>
           {children}
         </div>
+        <Footer/>
       </body>
     </html>
   )

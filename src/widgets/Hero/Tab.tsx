@@ -1,10 +1,17 @@
 "use client"
 import Input from '@/shared/input'
 import Select from '@/shared/select'
-import { ChevronDown, Plus, Search } from 'lucide-react'
+import { ChevronDown, ChevronUp, Plus, Search } from 'lucide-react'
 import React, { useState } from 'react'
+export interface TabI {
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const Tab = () => {
+const Tab = ({open, setOpen}: TabI) => {
+    const buttonText = open ? "Close filters" : "More filters";
+    const icon = open ? <ChevronUp size={22} strokeWidth={1.5} /> : <ChevronDown size={22} strokeWidth={1.5} />;
+
 
     const [PaymentType, setPaymentType] = useState<"buy" | "leasing">("buy")
 
@@ -13,7 +20,7 @@ const Tab = () => {
             <div className='lg:w-4/5 flex flex-col gap-x-3 xs:gap-y-4 gap-y-3'>
                 {/* Top Section */}
                 <div className='flex sm:flex-row flex-col gap-x-3 xs:gap-y-4 gap-y-3'>
-                    <div className='flex w-full gap-x-3 xs:gap-y-4 gap-y-3'>
+                    <div className='flex max-xs:flex-wrap w-full gap-x-3 xs:gap-y-4 gap-y-3'>
                         {/* Make */}
                         <div className='flex-1'>
                             <Select
@@ -39,13 +46,13 @@ const Tab = () => {
                             />
                         </div>
                         {/* Variant */}
-                        <div className='flex-1'>
+                        <div className='xs:flex-1 w-full'>
                             <Input name="variant" InitialValue='Variant' />
                         </div>
                     </div>
                     {/* Add Vehicle Button */}
                     <div className=''>
-                        <button className='w-full whitespace-nowrap flex items-center justify-center gap-2 bg-secondary hover:bg-white hover:text-secondary border hover:border-secondary xs:text-sm text-xs font-medium text-white md:py-4 py-3 px-3 rounded-lg transition-all duration-300'>
+                        <button className='w-full whitespace-nowrap flex items-center justify-center gap-2 bg-secondary hover:bg-white hover:text-secondary border hover:border-secondary xs:text-sm text-xs font-medium text-white md:py-4 xs:py-3 py-3.5 px-3 rounded-lg transition-all duration-300'>
                             <Plus className='max-xs:w-[15px] h-fit' size={18} strokeWidth={2} />  Add another vehicle
                         </button>
                     </div>
@@ -108,16 +115,29 @@ const Tab = () => {
                                 />
                             </div>
                         </div>
-                        {/* Vehicle type*/}
-                        <div className='max-sm:w-full'>
-                            <Select
-                                name='vehicle_type'
-                                InitialValue={{ label: "Vehicle Type", value: "" }}
-                                Options={[
-                                    { label: "Car", value: "car" },
-                                    { label: "Bus", value: "bus" },
-                                ]}
-                            />
+                        <div className='max-sm:w-full flex gap-3'>
+                            {/* Vehicle type*/}
+                            <div className='max-sm:w-full max-xs:w-1/2'>
+                                <Select
+                                    name='vehicle_type'
+                                    InitialValue={{ label: "Vehicle Type", value: "" }}
+                                    Options={[
+                                        { label: "Car", value: "car" },
+                                        { label: "Bus", value: "bus" },
+                                    ]}
+                                />
+                            </div>
+                            {/* Fuel Type */}
+                            <div className='xs:hidden max-xs:w-1/2'>
+                                <Select
+                                    name='fuel_type'
+                                    InitialValue={{ label: "Fuel Type", value: "" }}
+                                    Options={[
+                                        { label: "Fuel Type 1", value: "Fuel Type" },
+                                        { label: "Fuel Type 2", value: "Fuel Type" },
+                                    ]}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -126,7 +146,7 @@ const Tab = () => {
                 {/* Bottom Section */}
                 <div className='grid md:grid-cols-5 grid-cols-2 gap-x-3 xs:gap-y-4 gap-y-3'>
                     {/* Fuel Type */}
-                    <div className='col-span-1'>
+                    <div className='col-span-1 max-xs:hidden'>
                         <Select
                             name='fuel_type'
                             InitialValue={{ label: "Fuel Type", value: "" }}
@@ -145,7 +165,7 @@ const Tab = () => {
                         </div>
                     </div>
                     {/* City Code Type */}
-                    <div className='col-span-1 max-md:col-start-2 max-md:row-start-1'>
+                    <div className='col-span-1 max-md:col-start-2 max-md:row-start-1 max-xs:col-span-2'>
                         <Input name="city_code" Placeholder='City or ZIP Code' />
                     </div>
                 </div>
@@ -153,17 +173,17 @@ const Tab = () => {
             </div>
 
             {/* Right Buttons Section */}
-            <div className='lg:w-1/5 grid lg:grid-cols-1 sm:grid-cols-3 grid-cols-2 gap-x-3 xs:gap-y-4 gap-y-3'>
-                <button className='max-sm:col-span-2 hover:bg-white hover:text-primary border hover:border-primary w-full rounded-lg flex gap-2 items-center justify-center bg-primary text-white xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-3 transition-all duration-300'>
+            <div className='lg:w-1/5 grid lg:grid-cols-1 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-x-3 xs:gap-y-4 gap-y-3'>
+                <button className='max-sm:col-span-2 max-xs:col-span-1 hover:bg-white hover:text-primary border hover:border-primary w-full rounded-lg flex gap-2 items-center justify-center bg-primary text-white xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-3.5 transition-all duration-300'>
                     <Search size={16} strokeWidth={2} />  5.221.456 results
                 </button>
-                <button className='hover:bg-secondary hover:text-white w-full border border-secondary text-secondary rounded-lg xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-2 transition-all duration-300'>Save Search</button>
-                <button className='hover:bg-secondary hover:text-white flex gap-1 items-center justify-center w-full border border-secondary text-secondary rounded-lg xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-2 transition-all duration-300'>
-                    More filters <ChevronDown className='mt-[1px]' size={22} strokeWidth={1.5} />
+                <button className='hover:bg-secondary hover:text-white w-full border border-secondary text-secondary rounded-lg xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-3 transition-all duration-300'>Save Search</button>
+                <button onClick={() => setOpen(!open)} className='hover:bg-secondary hover:text-white flex gap-1 items-center justify-center w-full border border-secondary text-secondary rounded-lg xs:text-sm text-xs font-medium md:py-4 xs:py-3 py-[9px] transition-all duration-300'>
+                    {buttonText} {icon} 
                 </button>
             </div>
-
         </div>
+        
     )
 }
 
